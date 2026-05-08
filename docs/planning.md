@@ -1,0 +1,57 @@
+# Online Diary Project
+This is a online diary project which allows users to write anything they want to write and attach pictures against a particular day. Users can also tag some pre-defined tags to their diary entries. Each users entry will only be visible to them and not to others. The platform will be login based and will persist the diary entries.
+
+
+## Development process
+
+When instructed to build a feature:
+1. Develop the feature - do not skip any step from the feature-dev 7 step process
+2. Thoroughly test the feature with unit tests and integration tests and fix any issues
+3. Submit a PR using your github tools.
+
+
+## Feature List
+Below are the list of features described. Each Feature has a label in front, use that label to inform the status of the feature and any issues detected in it.
+
+### Basic
+An MVP of just the frontend with the following capabilities:-
+1. The UI shows a calendar and on clicking a particular date, the users can write anything and attach picture. 
+2. There is an option for users to provide a UI template which is just headings under which they are make diary entries in the respective days. If a template is provided then each day opens with that template. The templates are defined by each user how they want it. These templates are not global or defined by admin.
+3. Users can delete diary entries for a particular day.
+4. For Frontend framework use react and NextJS.
+5. Create docker compose as you seem fit.
+
+
+### Backend
+In this phase add the backend to presist those diary entries and also store the images attached in a directory. You can create a directory in home folder to store the images if you want. Also, make sure that these images are of unique names, if any duplicates modify them by adding any suitable suffix. Also, add a database support to store the images against the dates which they are uploaded so that they can be fetched and displayed back when required. Store the SQLLite db in db folder created in home directory. 
+
+### Login
+In this phase, display a login screen for the users, and only after login in display there respective diary entries. The system should support signing up and signin feature if the user is already registered. Make sure to store the user and password in a consistent storage and passed encrypted if required. You can use store any cookie for recording that the user is logged in.
+
+### AWS
+In this phase, add support to enable storage of the images in S3. The S3 credentials will be present in .env file. 
+
+
+## Technical design
+
+The backend should be in backend/ and be a uv project, using FastAPI.  
+The frontend should be in frontend/  
+The database should use SQLLite.
+Consider statically building the frontend and serving it via FastAPI, if that will work.  
+There should be scripts in scripts/ for:  
+```bash
+# Mac
+scripts/start-mac.sh    # Start
+scripts/stop-mac.sh     # Stop
+
+# Linux
+scripts/start-linux.sh
+scripts/stop-linux.sh
+
+# Windows
+scripts/start-windows.ps1
+scripts/stop-windows.ps1
+```
+Backend available at http://localhost:8700
+
+
