@@ -4,6 +4,7 @@ const TEMPLATE_KEY = "diary_template";
 export interface DiaryEntry {
   content: string;
   updatedAt: string;
+  image?: string;
 }
 
 function getAllEntries(): Record<string, DiaryEntry> {
@@ -21,9 +22,11 @@ export function getEntry(date: string): DiaryEntry | null {
   return entries[date] ?? null;
 }
 
-export function saveEntry(date: string, content: string): void {
+export function saveEntry(date: string, content: string, image?: string | null): void {
   const entries = getAllEntries();
-  entries[date] = { content, updatedAt: new Date().toISOString() };
+  const entry: DiaryEntry = { content, updatedAt: new Date().toISOString() };
+  if (image) entry.image = image;
+  entries[date] = entry;
   localStorage.setItem(ENTRIES_KEY, JSON.stringify(entries));
 }
 
@@ -35,7 +38,7 @@ export function deleteEntry(date: string): void {
 
 export function getDatesWithEntries(): string[] {
   const entries = getAllEntries();
-  return Object.keys(entries).filter((d) => entries[d].content.trim() !== "");
+  return Object.keys(entries).filter((d) => entries[d].content.trim() !== "" || !!entries[d].image);
 }
 
 export function getTemplate(): string {

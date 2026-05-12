@@ -13,13 +13,33 @@ When instructed to build a feature:
 ## Feature List
 Below are the list of features described. Each Feature has a label in front, use that label to inform the status of the feature and any issues detected in it.
 
-### Basic
+### Basic — STATUS: COMPLETE (merged to feature/basic-ui, PR submitted)
 An MVP of just the frontend with the following capabilities:-
 1. The UI shows a calendar and on clicking a particular date, the users can write anything and attach picture. 
 2. There is an option for users to provide a UI template which is just headings under which they are make diary entries in the respective days. If a template is provided then each day opens with that template. The templates are defined by each user how they want it. These templates are not global or defined by admin.
 3. Users can delete diary entries for a particular day.
 4. For Frontend framework use react and NextJS.
 5. Create docker compose as you seem fit.
+6. The diary entry panel has a view mode and an edit mode. If no entry exists for a date, a blank state is shown with an Edit button to start writing. If an entry exists, the saved content is displayed in read-only view with an Edit button to switch to edit mode.
+7. Users can attach a single image to a diary entry. In edit mode an "Add photo" button opens a file picker; the chosen image is shown as a small preview with an option to remove or replace it. In view mode the image thumbnail is shown below the text; clicking the thumbnail opens it in a full-screen lightbox overlay (click outside or press Escape to close). The calendar dot also appears for days that have an image but no text. Images are stored as base64 data URLs in localStorage (will move to backend storage in the Backend phase).
+
+**Implementation notes:**
+- Frontend lives in `frontend/` as a Next.js 15 app (upgraded to 15.3.9 to patch CVE-2025-66478).
+- Diary entries and templates are persisted via `localStorage` (no backend yet).
+- Docker Compose included at project root.
+- View/edit mode added to `DiaryEditor` component: dates with no entry show a blank state + Edit button; dates with an entry show the content read-only + Edit button to switch to edit mode.
+- Image upload uses native `FileReader` API (no extra dependencies); stored as base64 on `DiaryEntry.image`.
+- Lightbox is a fixed full-screen overlay rendered inside `DiaryEditor`; closes on backdrop click or Escape key.
+
+**How to start the dev server (WSL2 / Windows `/mnt/d/` path):**
+```bash
+cd frontend
+npm install --no-bin-links   # only needed once after fresh clone; --no-bin-links required on Windows FS
+node node_modules/next/dist/bin/next dev &
+```
+- Do NOT use `npm run dev` — the `next` symlink in `.bin/` cannot be created on a Windows filesystem from WSL2.
+- After a PC restart port 3000 is free and the `.next` cache is clean, so the server starts cleanly.
+- If the `.next` directory gets into a bad state, delete its contents manually and restart the server.
 
 
 ### Backend

@@ -53,6 +53,25 @@ describe("diary entry storage", () => {
     expect(dates).toContain("2026-05-10");
   });
 
+  test("saves and retrieves an entry with an image", () => {
+    const dataUrl = "data:image/png;base64,abc123";
+    saveEntry("2026-05-08", "With image", dataUrl);
+    const entry = getEntry("2026-05-08");
+    expect(entry?.image).toBe(dataUrl);
+  });
+
+  test("clears image when saved with null", () => {
+    saveEntry("2026-05-08", "Hello", "data:image/png;base64,abc123");
+    saveEntry("2026-05-08", "Hello", null);
+    expect(getEntry("2026-05-08")?.image).toBeUndefined();
+  });
+
+  test("getDatesWithEntries includes image-only entries", () => {
+    saveEntry("2026-05-11", "", "data:image/png;base64,abc123");
+    const dates = getDatesWithEntries();
+    expect(dates).toContain("2026-05-11");
+  });
+
   test("getDatesWithEntries returns empty array when nothing saved", () => {
     expect(getDatesWithEntries()).toEqual([]);
   });
